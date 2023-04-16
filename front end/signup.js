@@ -1,3 +1,5 @@
+const link = 'http://localhost:7000';
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
     form.addEventListener('submit', function(e) {
@@ -6,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const email = form.email.value;
       const password = form.password.value;
       const data = { name, email, password };
-      axios.post('http://localhost:7000/signup', data)
+      axios.post(`${link}/signup`, data)
         .then(response => {
           console.log('Sign up successful!');
         })

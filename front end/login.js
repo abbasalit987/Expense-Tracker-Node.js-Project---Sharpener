@@ -1,3 +1,5 @@
+const link = 'http://localhost:7000';
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
     const signupOption = document.querySelector('#signup-option');
@@ -10,10 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
       const password = form.elements.password.value;
     
       // make axios post request to backend API with user data
-      axios.post('/login', { email, password })
+      axios.post(`${link}/login`, { email, password })
         .then(response => {
           // handle successful login, e.g. redirect to dashboard page
-          window.location.href = '/dashboard';
+          // window.location.href = '/dashboard';
+          console.log(response);
         })
         .catch(error => {
           // handle login error, e.g. show error message

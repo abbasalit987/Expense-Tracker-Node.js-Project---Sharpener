@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post('/signup', adminController.userSignUp);
 
-// router.get('/user/get-users', adminController.getUsers);
+router.post('/login', adminController.userLogin);
 
 // router.delete('/user/delete-user/:id', adminController.deleteUser);
 
