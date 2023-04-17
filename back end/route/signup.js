@@ -2,13 +2,11 @@ const path = require('path');
 
 const express = require('express');
 
-const adminController = require('../controller/admin');
+const signupController = require('../controller/signup');
 
 const router = express.Router();
 
-router.post('/signup', adminController.userSignUp);
-
-router.post('/login', adminController.userLogin);
+router.post('/signup', signupController.userSignUp);
 
 // router.delete('/user/delete-user/:id', adminController.deleteUser);
 
