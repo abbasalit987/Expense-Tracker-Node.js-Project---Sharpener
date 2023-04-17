@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
       axios.post(`${link}/login`, { email, password })
         .then(response => {
           // handle successful login, e.g. redirect to dashboard page
-          // window.location.href = '/dashboard';
+          window.location.href = '../dailyexpense/dailyexpense.html';
           console.log(response);
         })
         .catch(error => {
@@ -26,6 +26,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     document.getElementById('signup-btn').addEventListener('click', function() {
-        window.location.href = 'signup.html';
+        window.location.href = '../signup/signup.html';
       });
 });

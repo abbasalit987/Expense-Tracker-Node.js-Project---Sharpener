@@ -6,9 +6,10 @@ const bodyParser = require('body-parser');
 
 const signupRoutes = require('./route/signup');
 const loginRoutes = require('./route/login');
-const sequelize = require('./util/database');
 
-const User = require('./model/users');
+const dailyexpenseRoutes = require('./route/dailyexpense');
+
+const sequelize = require('./util/database');
 
 const app = express();
 
@@ -19,6 +20,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(signupRoutes);
 app.use(loginRoutes);
+
+app.use('/expense',dailyexpenseRoutes);
 
 sequelize
   .sync()

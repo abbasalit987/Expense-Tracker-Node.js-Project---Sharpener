@@ -1,8 +1,11 @@
+const link = 'http://localhost:7000';
+
 // Get the expenses from the server
-axios.get('/api/expenses')
+axios.get(`${link}/expense/get-expenses`)
   .then((response) => {
     // If the request is successful, populate the table with expenses
-    const expenses = response.data.expenses;
+    // console.log(response);
+    const expenses = response.data.expense;
     populateTable(expenses);
   })
   .catch(function (error) {
@@ -16,39 +19,42 @@ form.addEventListener('submit', function(event) {
   event.preventDefault();
 
   const amount = document.getElementById('expense-amount').value;
-  const description = document.getElementById('expense-description').value;
-  const category = document.getElementById('expense-category').value;
+  const description = document.getElementById('expense-desc').value;
+  const category = document.getElementById('expense-cat');
+  const selectedOption = category.options[category.selectedIndex].value;
 
   // Send the expense data to the server
-  axios.post('/api/expenses', {
-    amount: amount,
+  axios.post(`${link}/expense/add-expenses`, {
+    category: selectedOption,
     description: description,
-    category: category
+    amount: amount
   })
-  .then(function (response) {
+  .then((response) =>  {
     // If the request is successful, add the new expense to the table
+    // console.log(response);
     const newExpense = response.data.expense;
     addExpenseToTable(newExpense);
 
     // Reset the form
     form.reset();
   })
-  .catch(function (error) {
-    console.log(error);
-  });
+  .catch(err => console.log(err));
 });
 
 function populateTable(expenses) {
-  const tableBody = document.getElementById('expenses-table-body');
+  const tableBody = document.getElementById('expense-table-body');
   let rows = '';
+  // console.log(expenses);
 
   // Loop through the expenses and create a row for each one
   expenses.forEach(function(expense) {
     rows += `
-      <tr>
-        <td>${expense.amount}</td>
-        <td>${expense.description}</td>
+      <tr id='row-${expense.id}'>
         <td>${expense.category}</td>
+        <td>${expense.description}</td>
+        <td>${expense.amount}</td>
+        <td><button onclick = 'deleteExpense(${expense.id})' class="delete-btn">Delete</button></td>
+        
       </tr>
     `;
   });
@@ -58,16 +64,27 @@ function populateTable(expenses) {
 }
 
 function addExpenseToTable(expense) {
-  const tableBody = document.getElementById('expenses-table-body');
+  const tableBody = document.getElementById('expense-table-body');
 
   // Create a row for the new expense
   const newRow = document.createElement('tr');
+  newRow.id = 'row-${expense.id}';
   newRow.innerHTML = `
-    <td>${expense.amount}</td>
-    <td>${expense.description}</td>
     <td>${expense.category}</td>
+    <td>${expense.description}</td>
+    <td>${expense.amount}</td>
+    <td><button onclick = 'deleteExpense(${expense.id})' class="delete-btn">Delete</button></td>
   `;
 
   // Add the row to the table body
   tableBody.appendChild(newRow);
 }
+
+deleteExpense = (id) => {
+   axios.delete(`${link}/expense/delete-expense/${id}`)
+  .then(() => {
+    const expenseElemId = `row-${id}`;
+    document.getElementById(expenseElemId).remove();
+  })
+  .catch(err => console.log(err));
+};
