@@ -1,5 +1,7 @@
 const User = require('../model/users');
 
+const bcrypt = require('bcrypt');
+
 exports.userLogin = async (req, res, next) => {
     const {email, password} = req.body;
   
@@ -10,13 +12,22 @@ exports.userLogin = async (req, res, next) => {
         return res.status(401).send({ message: 'User not found' });
       }
     
-      if (password !== existingUser.password) {
-        return res.status(401).send({ message: 'User not authorized' });
-      }
+      bcrypt.compare(password, existingUser.password, function(err, result) {
+        if (err) {
+          // Handle error
+          throw new Error('Something went wrong');
+        } else if (result) {
+          // Passwords match
+          res.status(200).json({ message: 'Login successful' });
+        } else {
+          // Passwords do not match
+          return res.status(400).json({ message: 'Incorrect Password' });
+        }
+      });
   
       // Create new user record
       // const user = await User.create({ name, email, password });
-      res.send({ message: 'Login successful' });
+      
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Internal server error' });
