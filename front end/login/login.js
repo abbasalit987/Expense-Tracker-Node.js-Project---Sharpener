@@ -16,7 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => {
           // handle successful login, e.g. redirect to dashboard page
           window.location.href = '../dailyexpense/dailyexpense.html';
-          console.log(response);
+          // console.log(response);
+          localStorage.setItem('token',response.data.token);
         })
         .catch(error => {
           // handle login error, e.g. show error message

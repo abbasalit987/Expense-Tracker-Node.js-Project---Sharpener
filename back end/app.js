@@ -4,6 +4,9 @@ const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const User = require('./model/users');
+const Expenses = require('./model/expense');
+
 const signupRoutes = require('./route/signup');
 const loginRoutes = require('./route/login');
 
@@ -22,6 +25,9 @@ app.use(signupRoutes);
 app.use(loginRoutes);
 
 app.use('/expense',dailyexpenseRoutes);
+
+User.hasMany(Expenses);
+Expenses.belongsTo(User);
 
 sequelize
   .sync()

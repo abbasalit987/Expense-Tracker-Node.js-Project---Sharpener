@@ -4,13 +4,15 @@ const express = require('express');
 
 const dailyexpenseController = require('../controller/dailyexpense');
 
+const userAuthentication = require('../middleware/auth')
+
 const router = express.Router();
 
-router.post('/add-expenses', dailyexpenseController.addExpenses);
+router.post('/add-expenses', userAuthentication.verifyToken, dailyexpenseController.addExpenses);
 
-router.get('/get-expenses', dailyexpenseController.getExpenses);
+router.get('/get-expenses', userAuthentication.verifyToken ,dailyexpenseController.getExpenses);
 
-router.delete('/delete-expense/:id', dailyexpenseController.deleteExpenses);
+router.delete('/delete-expense/:id', userAuthentication.verifyToken, dailyexpenseController.deleteExpenses);
 
 // router.delete('/user/delete-user/:id', adminController.deleteUser);
 

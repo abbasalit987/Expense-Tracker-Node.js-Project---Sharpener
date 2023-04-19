@@ -1,7 +1,7 @@
 const link = 'http://localhost:7000';
-
+const token = localStorage.getItem('token');
 // Get the expenses from the server
-axios.get(`${link}/expense/get-expenses`)
+axios.get(`${link}/expense/get-expenses`,{headers : {'Authorization' : token}})
   .then((response) => {
     // If the request is successful, populate the table with expenses
     // console.log(response);
@@ -22,13 +22,14 @@ form.addEventListener('submit', function(event) {
   const description = document.getElementById('expense-desc').value;
   const category = document.getElementById('expense-cat');
   const selectedOption = category.options[category.selectedIndex].value;
+  // const userId = localStorage.getItem('token').userId;
 
   // Send the expense data to the server
   axios.post(`${link}/expense/add-expenses`, {
     category: selectedOption,
     description: description,
     amount: amount
-  })
+  },{headers : {'Authorization' : token}})
   .then((response) =>  {
     // If the request is successful, add the new expense to the table
     // console.log(response);
@@ -81,7 +82,7 @@ function addExpenseToTable(expense) {
 }
 
 deleteExpense = (id) => {
-   axios.delete(`${link}/expense/delete-expense/${id}`)
+   axios.delete(`${link}/expense/delete-expense/${id}`,{headers : {'Authorization' : token}})
   .then(() => {
     const expenseElemId = `row-${id}`;
     document.getElementById(expenseElemId).remove();
