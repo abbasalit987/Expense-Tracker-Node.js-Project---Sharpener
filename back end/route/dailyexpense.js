@@ -4,7 +4,7 @@ const express = require('express');
 
 const dailyexpenseController = require('../controller/dailyexpense');
 
-const userAuthentication = require('../middleware/auth')
+const userAuthentication = require('../middleware/auth');
 
 const router = express.Router();
 

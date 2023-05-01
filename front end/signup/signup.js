@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
       axios.post(`${link}/signup`, data)
         .then(response => {
           console.log('Sign up successful!');
+          window.location.href = "../dailyexpense/dailyexpense.html";
         })
         .catch(error => {
           console.log(error);

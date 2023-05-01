@@ -89,3 +89,31 @@ deleteExpense = (id) => {
   })
   .catch(err => console.log(err));
 };
+
+document.getElementById('rzp-button1').onclick = async (e) => {
+  const token = localStorage.getItem('token');
+  const response = await axios.get(`${link}/purchase/premiummembership`,{headers : {'Authorization' : token}});
+  console.log(response);
+
+  var options = {
+    "key": response.data.key_id,
+    "order_id": response.data.order.id,
+    "handler": async (response) => {
+      await axios.post(`${link}/purchase/updatetxnstatus`, {
+        order_id : options.order_id,
+        payment_id : response.razorpay_payment_id,
+      },{headers : {'Authorization' : token}})
+
+      alert(`You're now a Premium User!`)
+    } 
+  }
+
+  const rzp1 = new Razorpay(options);
+  rzp1.open();
+  e.preventDefault();
+
+  rzp1.on('payment.failed', (response) => {
+    console.log(response);
+    alert('Something went wrong :/')
+  });
+}

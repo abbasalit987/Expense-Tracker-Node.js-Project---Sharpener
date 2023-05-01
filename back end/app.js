@@ -6,9 +6,11 @@ const bodyParser = require('body-parser');
 
 const User = require('./model/users');
 const Expenses = require('./model/expense');
+const Order = require('./model/orders');
 
 const signupRoutes = require('./route/signup');
 const loginRoutes = require('./route/login');
+const purchaseRoutes = require('./route/purchase');
 
 const dailyexpenseRoutes = require('./route/dailyexpense');
 
@@ -23,11 +25,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(signupRoutes);
 app.use(loginRoutes);
+app.use(purchaseRoutes);
 
 app.use('/expense',dailyexpenseRoutes);
 
 User.hasMany(Expenses);
 Expenses.belongsTo(User);
+
+User.hasMany(Order);
+Order.belongsTo(User);
 
 sequelize
   .sync()
